@@ -1,16 +1,16 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer components {
+  .main-section-banner {
+    background-image: url('https://i.ibb.co/JnmTD12/banner.jpg');
+    background-position: center;
+    background-size: cover;
+  }
 }
-
-* {
-  box-sizing: border-box;
+@layer base {
+  html {
+    /* @apply bg-gray-200; */
+  }
 }
