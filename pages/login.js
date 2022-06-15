@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     console.log('Form submitted');
 
-    const response = fetch('http://127.0.0.1:8001/api/token/', {
+    const response = fetch('https://semuna-api.herokuapp.com/api/token/', {
       method: 'POST',
       headers: {
         // here we are telling the backend it json data
