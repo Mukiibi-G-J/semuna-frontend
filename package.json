@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "heroku-postbuild": "next --legacy-peer-deps"
+    "heroku-postbuild": "next --legacy-peer-deps",
+    "heroku-prebuild": "npm --force"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
