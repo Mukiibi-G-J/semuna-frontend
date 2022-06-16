@@ -118,10 +118,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`http://127.0.0.1:8001/api/product/${params.slug}`);
+  // https://semuna-api.herokuapp.com/
+  // const res = await fetch(`http://127.0.0.1:8001/api/product/${params.slug}`);
+  const res = await fetch(
+    `https://semuna-api.herokuapp.com/api/product/${params.slug}`
+  );
+
   const product = await res.json();
 
-  const ress = await fetch('http://127.0.0.1:8001/api/category');
+  const ress = await fetch('https://semuna-api.herokuapp.com/api/category');
   const categories = await ress.json();
 
   return {
