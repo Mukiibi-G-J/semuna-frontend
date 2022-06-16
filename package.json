@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "heroku-postbuild": "npm  i --force",
-    "postinstall": "ng build --aot --target=production"
+    "postinstall": "npm i --force"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
