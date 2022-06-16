@@ -7,7 +7,7 @@ import Head from 'next/head';
 
 import '../styles/globals.css';
 import theme from '../src/theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+// import { CssBaseline, ThemeProvider } from '@mui/material';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -30,11 +30,11 @@ export default function MyApp(props) {
         />
       </Head>
       <StoreProvider>
-        <ThemeProvider theme={theme}>
+        {/* <ThemeProvider theme={theme}> */}
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
+          {/* <CssBaseline /> */}
           <Component {...pageProps} />
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </StoreProvider>
     </React.Fragment>
   );

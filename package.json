@@ -9,11 +9,7 @@
     "heroku-postbuild": "npm install --legacy-peer-deps"
   },
   "dependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
     "@heroicons/react": "^1.0.6",
-    "@mui/material": "^5.8.4",
-    "@mui/styles": "^5.8.4",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
     "next": "12.1.6",
