@@ -1,4 +1,5 @@
 import { LockClosedIcon } from '@heroicons/react/outline';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
@@ -17,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     console.log('Form submitted');
 
-    const response = fetch('https://semuna-api.herokuapp.com/api/token/', {
+    const response = fetch(`http://127.0.0.1:8001/api/token/`, {
       method: 'POST',
       headers: {
         // here we are telling the backend it json data
@@ -31,15 +32,21 @@ const Login = () => {
 
     const res = await response;
     const data = await res.json();
-    console.log('data:', data.access);
-
     console.log('response:', data);
+    console.log('refresh:', data.refresh);
+
+    console.log('access:', data.access);
 
     if (data) {
+      localStorage.setItem('authtokens', JSON.stringify(data));
+      Cookies.set('access', JSON.stringify(data.access));
+      Cookies.set('refresh', JSON.stringify(data.refresh));
+
       dispatch({ type: 'AUTH_TOKENS', payload: data });
       // setAuthTokens(data);
       // setUser(jwt_decode(data.access));
       if (data.access) {
+        router.reload();
         router.push('/');
       }
     }

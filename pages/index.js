@@ -44,11 +44,11 @@ export default function Home({ products, categories }) {
 export async function getStaticProps() {
   // http://127.0.0.1:8000/api/category
   // const ress = await fetch('http://127.0.0.1:8001/api/category');
-  // https://semuna-api.herokuapp.com/
-  const ress = await fetch('https://semuna-api.herokuapp.com/api/category');
+  //`${process.env.url}/
+  const ress = await fetch(`${process.env.url}/api/category`);
 
   const categories = await ress.json();
-  const res = await fetch('https://semuna-api.herokuapp.com/api/products');
+  const res = await fetch(`${process.env.url}/api/products`);
   const products = await res.json();
   // console.log(products);
   return {

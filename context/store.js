@@ -14,9 +14,7 @@ const initialState = {
 
   categories: [],
   authTokens: '',
-  user: Cookies.get('authtokens')
-    ? jwt_decode(Cookies.get('authtokens'))
-    : null,
+  user: Cookies.get('access') ? jwt_decode(Cookies.get('access')) : false,
 };
 
 function reducer(state, action) {
@@ -47,13 +45,13 @@ function reducer(state, action) {
     }
     case 'AUTH_TOKENS': {
       const authTokens = action.payload;
-      localStorage.setItem('authtokens', JSON.stringify(authTokens));
-      Cookies.set('authtokens', JSON.stringify(authTokens));
-      const userdata = localStorage.getItem('authtokens')
-        ? jwt_decode(localStorage.getItem('authtokens'))
-        : null;
-      console.log(userdata);
-      const user = userdata;
+      // localStorage.setItem('authtokens', JSON.stringify(authTokens));
+      // Cookies.set('authtokens', JSON.stringify(authTokens));
+      // const userdata = localStorage.getItem('authtokens')
+      //   ? jwt_decode(localStorage.getItem('authtokens'))
+      //   : null;
+      // console.log(userdata);
+      // const user = userdata;
 
       // console.log(
       //   localStorage.getItem('authtokens')
@@ -63,7 +61,7 @@ function reducer(state, action) {
 
       return {
         ...state,
-        user,
+        // user,
         authTokens,
       };
     }

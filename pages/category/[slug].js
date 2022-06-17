@@ -56,9 +56,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`http://127.0.0.1:8001/api/category/${params.slug}`);
+  const res = await fetch(`${process.env.url}/api/category/${params.slug}`);
   const products = await res.json();
-  const ress = await fetch('http://127.0.0.1:8001/api/category');
+  const ress = await fetch(`${process.env.url}/api/category`);
   const categories = await ress.json();
 
   return {

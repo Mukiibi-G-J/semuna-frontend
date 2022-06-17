@@ -28,6 +28,7 @@ const Header = () => {
     cart: { cart_Items },
   } = state;
   console.log(cart_Items.length);
+  console.log(user);
   return (
     <div className="header bg-gray-900  top-0  h-16 flex items-center   z-50 sticky">
       <div className="logo w-1/5 h-16 ml-10 ">
@@ -74,7 +75,7 @@ const Header = () => {
         </Link>
 
         <div>
-          {user ? (
+          {user?.username ? (
             <>
               <LogoutIcon className="h-6 w-6" onClick={logoutuser} />
             </>

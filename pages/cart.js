@@ -79,9 +79,9 @@ export default Cart;
 export async function getStaticProps({ params }) {
   // const res = await fetch(`http://127.0.0.1:8000/api/category/${params.slug}`);
   // const products = await res.json();
-  // https://semuna-api.herokuapp.com/
-  // const ress = await fetch('http://127.0.0.1:8001/api/category');
-  const ress = await fetch(' https://semuna-api.herokuapp.com/api/category');
+  // /`${process.env.url}/;
+  // const `ess = await fetch('http://127.0.0.1:8001/api/category');
+  const ress = await fetch(`${process.env.url}/api/category`);
 
   const categories = await ress.json();
 

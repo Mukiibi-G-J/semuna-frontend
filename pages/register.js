@@ -1,8 +1,36 @@
 import { LockClosedIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const Register = () => {
+  const router = useRouter();
+  const registeruser = async (e) => {
+    // http://localhost:8001/api/register
+    e.preventDefault();
+    const response = fetch(`http://localhost:8001/api/register`, {
+      method: 'POST',
+      headers: {
+        // here we are telling the backend it json data
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: e.target.first_name.value,
+        second_name: e.target.second_name.value,
+        user_name: e.target.user_name.value,
+        email: e.target.email.value,
+        password: e.target.password.value,
+      }),
+    });
+    const res = await response;
+    if (res.status === 200) {
+      router.push('/login');
+    } else {
+      alert(res.status);
+    }
+    console.log(res);
+    // if res.statusCode === 200 && res.
+  };
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 ">
@@ -31,7 +59,12 @@ const Register = () => {
             </Link>
           </p> */}
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form
+          className="mt-8 space-y-6"
+          action="#"
+          onSubmit={registeruser}
+          method="POST"
+        >
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm space-y-4">
             <div>
@@ -40,7 +73,7 @@ const Register = () => {
               </label>
               <input
                 id="First Name"
-                name="First Name"
+                name="first_name"
                 type="First Name"
                 autoComplete="First Name"
                 required
@@ -54,7 +87,7 @@ const Register = () => {
               </label>
               <input
                 id="Second Name"
-                name="Second Name"
+                name="second_name"
                 type="Second Name"
                 autoComplete="Second Name"
                 required
@@ -68,7 +101,7 @@ const Register = () => {
               </label>
               <input
                 id="UserName"
-                name="UserName"
+                name="user_name"
                 type="UserName"
                 autoComplete="UserName"
                 required
@@ -91,7 +124,7 @@ const Register = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label htmlFor="Phone Number" className="sr-only">
                 Phone Number
               </label>
@@ -105,7 +138,7 @@ const Register = () => {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Phone Number"
               />
-            </div>
+            </div> */}
             <div>
               <label htmlFor="password" className="sr-only">
                 Password
