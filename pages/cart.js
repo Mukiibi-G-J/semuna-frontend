@@ -1,72 +1,133 @@
-import React from 'react';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import { useContext } from 'react';
+
+import Image from 'next/image';
 import Header from '../components/Header';
 import { Store } from '../context/store';
+import dynamic from 'next/dynamic';
+import { MinusSmIcon, PlusIcon, PlusSmIcon } from '@heroicons/react/solid';
+import CurrencyFormat from 'react-currency-format';
+import { TrashIcon } from '@heroicons/react/outline';
+import { useRouter } from 'next/router';
 
+const items = {
+  instock: 20,
+};
 const Cart = ({ categories }) => {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const {
     cart: { cart_Items },
   } = state;
-
+  const [count, setCount] = useState(0);
+  const router = useRouter();
+  const updateCartHandler = (item, quantity) => {
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+  };
+  const removeItemHandler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
   return (
     <>
       <Header />
       <div className="main-section flex-1 p-6 bg-white">
         <h1 className="font-bold text-gray-400 text-3xl mb-6">Shopping Cart</h1>
-        <div className="font-bold text-gray-400 table-titles flex">
-          <h2 className="flex-grow">Product</h2>
-          <h2 className="w-48">Count</h2>
-          <h2 className="w-48">Total Cost</h2>
-          <span className="w-10" />
-        </div>
-        <div className="cart-items mt-5">
-          {cart_Items.map((product) => (
-            <div
-              key={product}
-              className="cart-item flex items-center pb-4 border-b border-gray-100"
-            >
-              <div className="cart-item-image w-40 h-24 bg-white p-4 rounded-lg">
-                <img
-                  className="w-full h-full object-contain"
-                  src={product.product_image[0].image}
-                />
-              </div>
-              <div className="cart-item-details flex-grow">
-                <div className="cart-item-title font-bold text-sm text-gray-600">
-                  {product.description}
-                </div>
-                <div className="cart-item-brand text-sm text-gray-400">
-                  {product.title}
-                </div>
-              </div>
-              <div className="cart-item-counter w-48 flex items-center">
-                <div className="chevron-left text-gray-400 bg-gray-100 rounded h-6 w-6 flex justify-center items-center hover:bg-gray-200 mr-2 cursor-pointer">
-                  <i className="fas fa-chevron-left fa-xs" />
-                </div>
-                <h4 className="text-gray-400">x1</h4>
-                <div className="chevron-right text-gray-400 bg-gray-100 rounded h-6 w-6 flex justify-center items-center hover:bg-gray-200 ml-2 cursor-pointer">
-                  <i className="fas fa-chevron-right fa-xs" />
-                </div>
-              </div>
-              <div className="cart-item-total-cost w-48 font-bold text-gray-400">
-                {product.regular_price}
-              </div>
-              <div className="cart-item-delete w-10 font-bold text-gray-300 cursor-pointer hover:text-gray-400">
-                <i className="fas fa-times" />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="complete-order flex justify-end mt-10">
-          <div className="total-cost mr-7">
-            <h2 className="text-gray-400">Total Cost</h2>
-            <div className="text-gray-600 font-bold total-cost-number text-3xl">
-              $1,439.00
-            </div>
+        <div className="grid md:grid-cols-4 md:gap-5">
+          <div className="overflow-x-auto md:col-span-3">
+            <table className="min-w-full">
+              <thead className="border-b">
+                <tr>
+                  <th className="p-5 text-left">Item</th>
+                  <th className="p-5 text-right">Quantity</th>
+                  <th className="p-5 text-right">Price</th>
+                  <th className="p-5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart_Items.map((item) => (
+                  <tr key={item.slug} className="border-b">
+                    <td>
+                      <Link href={`/product/${item.slug}`}>
+                        <a className="flex items-center">
+                          <Image
+                            src={item.product_image[0].image}
+                            alt={item.title}
+                            width={50}
+                            height={50}
+                          ></Image>
+                          &nbsp;
+                          {item.title}
+                        </a>
+                      </Link>
+                    </td>
+                    <td className="p-5 text-right">
+                      <select
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateCartHandler(item, parseInt(e.target.value))
+                        }
+                      >
+                        {[...Array(items.instock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <CurrencyFormat
+                      renderText={(value) => (
+                        <>
+                          <td className="p-5 text-right">{value}</td>
+                        </>
+                      )}
+                      decimalScale={0}
+                      value={item.regular_price}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'UGX'}
+                    />
+                    <td className="p-5 text-center">
+                      <button onClick={() => removeItemHandler(item)}>
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div className="complete-order-button w-56 flex items-center justify-center bg-yellow-500 rounded text-white cursor-pointer hover:bg-yellow-600">
-            Complete Order
+          <div className="card p-5">
+            <ul>
+              <li>
+                <CurrencyFormat
+                  renderText={(value) => (
+                    <>
+                      <div className="pb-3 text-xl">
+                        Subtotal (
+                        {cart_Items.reduce((a, c) => a + c.quantity, 0)})<br />
+                        {value}
+                      </div>
+                    </>
+                  )}
+                  decimalScale={0}
+                  value={cart_Items.reduce(
+                    (a, c) => a + c.quantity * c.regular_price,
+                    0
+                  )}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'UGX'}
+                />
+              </li>
+              <li>
+                <button
+                  onClick={() => router.push('/shipping')}
+                  className="w-56 flex h-10 items-center justify-center bg-yellow-500 rounded text-white cursor-pointer hover:bg-yellow-600"
+                >
+                  Check Out
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -74,7 +135,8 @@ const Cart = ({ categories }) => {
   );
 };
 
-export default Cart;
+// export default Cart;
+export default dynamic(() => Promise.resolve(Cart), { ssr: false });
 
 export async function getStaticProps({ params }) {
   // const res = await fetch(`http://127.0.0.1:8000/api/category/${params.slug}`);

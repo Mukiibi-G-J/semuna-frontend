@@ -5,7 +5,14 @@ import { Store } from '../context/store';
 export const Hotdeals = ({ products }) => {
   const { state, dispatch } = useContext(Store);
   const addCartHandler = (product) => {
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product } });
+    //! we are looping through all the current items in the cart
+    const existItem = state.cart.cart_Items.find(
+      (x) => parseInt(x.id) === parseInt(product.id)
+    );
+
+    const quantity = existItem ? parseInt(existItem.quantity) + 1 : 1;
+
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
   };
   return (
     <div className="main-section-deals mt-5">
@@ -39,7 +46,7 @@ export const Hotdeals = ({ products }) => {
             <div>
               <button
                 onClick={() => addCartHandler(product)}
-                className="bg-[#FFCC00]  px-4 py-2 rounded-xl  hover:bg-yellow-500"
+                className="bg-[#FFCC00]  px-4 py-2 rounded-md   hover:bg-yellow-500"
               >
                 Add to cart
               </button>

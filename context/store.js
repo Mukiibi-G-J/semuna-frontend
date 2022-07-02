@@ -14,13 +14,14 @@ const initialState = {
 
   categories: [],
   authTokens: '',
-  user: Cookies.get('access') ? jwt_decode(Cookies.get('access')) : false,
+  user: Cookies.get('user') ? JSON.parse(Cookies.get('user')) : null,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CART_ADD_ITEM': {
       const newItem = action.payload;
+      console.log(newItem);
       //! checking whether the item exist > this gives us the existItem
       const existItem = state.cart.cart_Items.find(
         (item) => item.id === newItem.id
@@ -43,8 +44,16 @@ function reducer(state, action) {
         categories: action.payload,
       };
     }
-    case 'AUTH_TOKENS': {
-      const authTokens = action.payload;
+    case 'CART_REMOVE_ITEM': {
+      const cart_Items = state.cart.cart_Items.filter(
+        (item) => item.id !== action.payload.id
+      );
+      Cookies.set('cart_Items', JSON.stringify(cart_Items));
+      return { ...state, cart: { ...state.cart, cart_Items } };
+    }
+    case 'USER_LOGIN': {
+      // const authTokens = action.payload;
+      return { ...state, user: action.payload };
       // localStorage.setItem('authtokens', JSON.stringify(authTokens));
       // Cookies.set('authtokens', JSON.stringify(authTokens));
       // const userdata = localStorage.getItem('authtokens')
@@ -58,12 +67,6 @@ function reducer(state, action) {
       //     ? jwt_decode(localStorage.getItem('authtokens'))
       //     : null
       // );
-
-      return {
-        ...state,
-        // user,
-        authTokens,
-      };
     }
     case 'USER_LOGOUT': {
       return {

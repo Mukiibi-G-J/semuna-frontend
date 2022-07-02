@@ -2,8 +2,10 @@ import { Box, Card, Container, Grid, Hidden, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
 
 import Header from '../../components/Header';
+import { Store } from '../../context/store';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +45,16 @@ const useStyles = makeStyles((theme) => ({
 function Product({ product, categories }) {
   const classes = useStyles();
   const router = useRouter();
+  const { state, dispatch } = useContext(Store);
+  const addCartHandler = (product) => {
+    const existItem = state.cart.cart_Items.find(
+      (x) => parseInt(x.id) === parseInt(product.id)
+    );
+
+    const quantity = existItem ? parseInt(existItem.quantity) + 1 : 1;
+
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+  };
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -54,66 +66,58 @@ function Product({ product, categories }) {
         <title>{product.title}</title>
       </Head>
       <Header />
-      <div className=" bg-gray-200 h-screen">
-        <Container>
-          <Card>
-            <Grid container spacing={0}>
-              <Hidden only={['xs', 'sm']}>
-                <Grid item sm={1}>
-                  <Paper className={classes.paperImagePreview} elevation={0}>
-                    {product.product_image.map((c) => (
-                      <div key={c.id}>
-                        <Paper className={classes.paperImage} elevation={0}>
-                          <img
-                            src={product.product_image[0].image}
-                            alt={product.product_image[0].alt_text}
-                            className={classes.img}
-                          />
-                        </Paper>
-                        <Paper className={classes.paperImage} elevation={0}>
-                          <img
-                            src={product.product_image[0].image}
-                            alt={product.product_image[0].alt_text}
-                            className={classes.img}
-                          />
-                        </Paper>
-                        <Paper className={classes.paperImage} elevation={0}>
-                          <img
-                            src={product.product_image[0].image}
-                            alt={product.product_image[0].alt_text}
-                            className={classes.img}
-                          />
-                        </Paper>
-                      </div>
-                    ))}
-                  </Paper>
-                </Grid>
-              </Hidden>
-              <Grid item xs={12} sm={6}>
-                <Paper className={classes.paperImage} elevation={0}>
+      <div className=" bg-gray-200 h-screen flex justify-center  p-20">
+        <div className="flex items-center space-x-4 w-[800px] shadow-md bg-white">
+          <div>
+            {product.product_image.map((c) => (
+              <div key={c.id}>
+                <div>
                   <img
                     src={product.product_image[0].image}
                     alt={product.product_image[0].alt_text}
-                    className={classes.img}
                   />
-                </Paper>
-              </Grid>
-              <Grid item xs={12} sm={5}>
-                <Paper className={classes.paperRight} elevation={0}>
-                  <Box component="h1" fontSize={18} fontWeight="400">
-                    {product.title}
-                  </Box>
-                  <Box component="p" fontSize={22} fontWeight="900" m={0}>
-                    £{product.regular_price}
-                  </Box>
-                  <Box component="p" m={0} fontSize={14}>
-                    Free Delivery & Returns (Ts&Cs apply)
-                  </Box>
-                </Paper>
-              </Grid>
-            </Grid>
-          </Card>
-        </Container>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-28 h-18">
+                    <img
+                      src={product.product_image[0].image}
+                      alt={product.product_image[0].alt_text}
+                      className="w-ful h-full"
+                    />
+                  </div>
+                  <div className="w-28 h-18">
+                    <img
+                      src={product.product_image[0].image}
+                      alt={product.product_image[0].alt_text}
+                      className="w-ful h-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              // </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <p className="text-xl font-mono text-bold">{product.title}</p>
+            <p className="text-xl font-mono text-bold">{product.description}</p>
+            <p>
+              Brand:{product.brand} | Similar products from {product.brand}
+            </p>
+            <p>UGX:{product.regular_price}</p>
+            <div className="product-rating text-yellow-300 font-bold my-1">
+              ⭐⭐⭐⭐⭐ 4.5
+            </div>
+            <button
+              onClick={() => addCartHandler(product)}
+              className="bg-[#FFCC00]  px-4 py-2 rounded-md  hover:bg-yellow-500"
+            >
+              Add to Cart
+            </button>
+            <p>Free Delivery & Returns (Ts&Cs apply)</p>
+          </div>
+        </div>
+        <div></div>
       </div>
     </>
   );

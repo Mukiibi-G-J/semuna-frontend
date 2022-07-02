@@ -10,6 +10,7 @@ import Jdenticon from 'react-jdenticon';
 import Link from 'next/link';
 import { Store } from '../context/store';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 const Header = () => {
@@ -19,6 +20,8 @@ const Header = () => {
     localStorage.removeItem('authtokens');
     Cookies.remove('authtokens');
     Cookies.remove('cart_Items');
+    Cookies.remove('refresh');
+    Cookies.remove('access');
     router.push('/login');
     dispatch({ type: 'USER_LOGOUT' });
   };
@@ -27,12 +30,12 @@ const Header = () => {
     user,
     cart: { cart_Items },
   } = state;
-  console.log(cart_Items.length);
-  console.log(user);
+  // console.log(cart_Items.length);
+  console.log(user?.username);
   return (
     <div className="header bg-gray-900  top-0  h-16 flex items-center   z-50 sticky">
       <div className="logo w-1/5 h-16 ml-10 ">
-        <Link href="/">
+        <Link href="/" passHref>
           <a href="">
             <img
               src="/images/semuna.png"
@@ -95,4 +98,5 @@ const Header = () => {
   );
 };
 
-export default Header;
+// export default Header;
+export default dynamic(() => Promise.resolve(Header), { ssr: false });

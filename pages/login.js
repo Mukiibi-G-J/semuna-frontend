@@ -4,11 +4,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { Store } from '../context/store';
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const { state, dispatch } = useContext(Store);
   const { user } = state;
+
   const router = useRouter();
+  const { redirect } = router.query;
+  console.log(redirect);
   useEffect(() => {
     if (user) {
       router.push('/');
@@ -34,20 +38,25 @@ const Login = () => {
     const data = await res.json();
     console.log('response:', data);
     console.log('refresh:', data.refresh);
-
     console.log('access:', data.access);
+    const name = jwt_decode(data.access);
+    // const n = JSON.parse(name);
+    console.log(name);
 
     if (data) {
       localStorage.setItem('authtokens', JSON.stringify(data));
       Cookies.set('access', JSON.stringify(data.access));
       Cookies.set('refresh', JSON.stringify(data.refresh));
-
+      Cookies.set('user', JSON.stringify(name));
       dispatch({ type: 'AUTH_TOKENS', payload: data });
+      dispatch({ type: 'USER_LOGIN', payload: name });
+
       // setAuthTokens(data);
-      // setUser(jwt_decode(data.access));
+      // setUser(jwt_decode(data.acscess));
+      // console.log(jwt_decode(data.acscess));
       if (data.access) {
-        router.reload();
-        router.push('/');
+        // Cookies.set('user',;
+        router.push(redirect || '/');
       }
     }
 
@@ -56,7 +65,7 @@ const Login = () => {
     //   alert("something went wrong");
     // }
   };
-  console.log(user?.username);
+  // console.log(user?.username);
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 ">
