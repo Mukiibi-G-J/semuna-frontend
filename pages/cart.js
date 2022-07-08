@@ -96,7 +96,7 @@ const Cart = ({ categories }) => {
               </tbody>
             </table>
           </div>
-          <div className="card p-5">
+          <div className="shadow-md rounded-md h-40 p-5">
             <ul>
               <li>
                 <CurrencyFormat

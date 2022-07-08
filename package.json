@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "heroku-postbuild": "npm install --legacy-peer-deps"
+    "start": "next start -p $PORT"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -14,9 +13,11 @@
     "@heroicons/react": "^1.0.6",
     "@mui/material": "^5.8.4",
     "@mui/styles": "^5.8.4",
+    "axios": "^0.27.2",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
     "next": "12.1.6",
+    "notistack": "^2.0.5",
     "react": "18.1.0",
     "react-currency-format": "^1.1.0",
     "react-dom": "18.1.0",

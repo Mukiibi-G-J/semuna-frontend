@@ -3,11 +3,15 @@ import CheckoutWizard from '../components/CheckoutWizard';
 import { useForm } from 'react-hook-form';
 import { Store } from '../context/store';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const Shipping = () => {
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
-  const { user } = state;
+  const {
+    user,
+    cart: { shippingAddress },
+  } = state;
   const {
     handleSubmit,
     register,
@@ -18,9 +22,30 @@ const Shipping = () => {
     if (!user) {
       router.push('/login?redirect=/shipping');
     }
-  });
+    setValue('fullName', shippingAddress.fullName);
+    setValue('address', shippingAddress.address);
+    setValue('city', shippingAddress.city);
+    setValue('postalCode', shippingAddress.postalCode);
+    setValue('country', shippingAddress.country);
+  }, [setValue, shippingAddress]);
 
-  const submitHandler = () => {};
+  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+    dispatch({
+      type: 'SAVE_SHIPPING_ADDRESS',
+      payload: { fullName, address, city, postalCode, country },
+    });
+    Cookies.set(
+      'shippingAddress',
+      JSON.stringify({
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+      })
+    );
+    router.push('/payments');
+  };
   return (
     <div>
       <CheckoutWizard activeStep={1} />
@@ -98,8 +123,10 @@ const Shipping = () => {
             <div className="text-red-500 ">{errors.country.message}</div>
           )}
         </div>
-        <div className="mb-4 flex justify-center bg-yellow-500 w-20 rounded-md">
-          <button className="primary-button ">Next</button>
+        <div className="mb-4 flex justify-center w-20 rounded-md">
+          <button className="px-4 py-2 items-center justify-center bg-yellow-500 rounded cursor-pointer hover:bg-yellow-600">
+            Next
+          </button>
         </div>
       </form>
     </div>

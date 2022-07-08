@@ -29,7 +29,7 @@ const data = [
   },
 ];
 
-const CheckoutWizard = ({ activeStep = 0 }) => {
+const CheckoutWizard = ({ activeStep = 0, done }) => {
   return (
     <>
       {/* component */}
@@ -38,8 +38,11 @@ const CheckoutWizard = ({ activeStep = 0 }) => {
         <div className="mx-4 p-4">
           <div className="flex items-center">
             {data.map((step, index) => (
-              <>
-                <div className="flex items-center text-teal-600 relative">
+              <React.Fragment key={index}>
+                <div
+                  key={index}
+                  className="flex items-center text-teal-600 relative"
+                >
                   <div
                     className={`rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 ${
                       index <= activeStep
@@ -59,21 +62,29 @@ const CheckoutWizard = ({ activeStep = 0 }) => {
                 </div>
                 <div
                   className={`flex-auto border-t-2 transition duration-500 ease-in-out ${
-                    index <= activeStep
-                      ? 'border-teal-600'
-                      : ' border-gray-300 '
+                    index <= activeStep ? 'border-teal-600' : 'border-gray-300'
                   } `}
                 />
-              </>
+              </React.Fragment>
             ))}
-            <div className="flex items-center text-teal-600 relative">
+            <div className="flex items-center relative">
               <div
-                className={`rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 `}
+                className={`rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 ${
+                  done ? 'border-teal-600' : 'border-gray-300'
+                }`}
               >
-                <CheckIcon className="w-full h-full" />
+                <CheckIcon
+                  className={`w-full h-full ${
+                    done
+                      ? 'border-teal-600 text-teal-600'
+                      : 'border-gray-300 text-gray-300'
+                  } `}
+                />
               </div>
               <div
-                className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase `}
+                className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase ${
+                  done ? 'border-teal-600 text-teal-600' : 'text-black'
+                }`}
               >
                 Done
               </div>
