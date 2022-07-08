@@ -42,7 +42,7 @@ export default function Home({ products, categories }) {
 }
 
 export async function getStaticProps() {
-  // http://127.0.0.1:8000/api/category
+  // http://127.0ccc.0.1:8000/api/category
   // const ress = await fetch('http://127.0.0.1:8001/api/category');
   //`${process.env.url}/
 
