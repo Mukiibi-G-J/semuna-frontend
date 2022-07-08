@@ -8,7 +8,7 @@ const Register = () => {
   const registeruser = async (e) => {
     // http://localhost:8001/api/register
     e.preventDefault();
-    const response = fetch(`http://localhost:8001/api/register`, {
+    const response = fetch(`${process.env.url}/api/register`, {
       method: 'POST',
       headers: {
         // here we are telling the backend it json data
