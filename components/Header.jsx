@@ -22,6 +22,7 @@ const Header = () => {
     Cookies.remove('cart_Items');
     Cookies.remove('refresh');
     Cookies.remove('access');
+    Cookies.remove('user');
     router.push('/login');
     dispatch({ type: 'USER_LOGOUT' });
   };
