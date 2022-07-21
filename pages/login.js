@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { Store } from '../context/store';
 import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 const Login = () => {
   const { state, dispatch } = useContext(Store);
@@ -33,7 +34,13 @@ const Login = () => {
         password: e.target.password.value,
       }),
     });
-
+    // const { response } = await axios.post(
+    //   `https://semuna-api.heroku/api/token/`,
+    //   {
+    //     email: e.target.email.value,
+    //     password: e.target.password.value,
+    //   }
+    // );
     const res = await response;
     const data = await res.json();
     console.log('response:', data);

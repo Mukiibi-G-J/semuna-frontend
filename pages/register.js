@@ -8,7 +8,7 @@ const Register = () => {
   const registeruser = async (e) => {
     // http://localhost:8001/api/register
     e.preventDefault();
-    const response = fetch(`${process.env.url}/api/register`, {
+    const response = fetch(`https://semuna-api.herokuapp.com/api/register`, {
       method: 'POST',
       headers: {
         // here we are telling the backend it json data
